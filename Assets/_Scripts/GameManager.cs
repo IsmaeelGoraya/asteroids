@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    
-    private void Start()
-    {
-        
-    }
+    [SerializeField]
+    private ShipController _shipController;
+    [SerializeField]
+    private UIManager _uIManager;
 
     private void Update()
     {
@@ -21,11 +20,22 @@ public class GameManager : MonoBehaviour
             QuitGame();
     }
 
-    #region UI Functions
     public void StartGame()
     {
         //DO the UI hide, reset operations here
         Debug.Log("Start Game");
+        _shipController.Reset();
+        _shipController.Show();
+        _uIManager.HideMainUI();
+        _uIManager.ShowHudUI();
+    }
+
+    public void RestartGame()
+    {
+        _shipController.Reset();
+        _shipController.Hide();
+        _uIManager.ShowMainUI();
+        _uIManager.HideHudUI();
     }
 
     public void QuitGame()
@@ -36,5 +46,4 @@ public class GameManager : MonoBehaviour
          Application.Quit();
 #endif
     }
-    #endregion
 }
