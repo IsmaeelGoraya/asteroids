@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -9,9 +7,18 @@ public class ShipController : MonoBehaviour
     private float _rotationSpeed = 100.0f;
     [SerializeField]
     private float _shipThrust = 10.0f;
+    [SerializeField]
+    private GameObject _bulletPrefab;
 
     private Rigidbody2D _shipRigidbody2D;
     private float _shipThurstInput;
+    private int _bulletCount;
+    private const int _bulletLimit = 5;
+
+    private void Awake()
+    {
+        _bulletCount = 0;
+    }
 
     private void Start()
     {
@@ -24,6 +31,12 @@ public class ShipController : MonoBehaviour
         transform.Rotate(0, 0, -Input.GetAxis("Horizontal") * _rotationSpeed * Time.deltaTime);
         // Scan ship thurst input from left right keyboard keys here.
         _shipThurstInput = Input.GetAxis("Vertical");
+        // Fire bullet on ctrl key
+        // and no more than limit bullets
+        if ((Input.GetKeyDown(KeyCode.LeftControl) ||
+            Input.GetKeyDown(KeyCode.RightControl)) &&
+            _bulletCount < _bulletLimit)
+            FireBullet();
     }
 
     //Since we are using physics
@@ -31,6 +44,19 @@ public class ShipController : MonoBehaviour
     {
         // Thrust the ship with up and down keyboard keys
         _shipRigidbody2D.AddForce(transform.up * _shipThrust * _shipThurstInput);
+    }
+
+    private void FireBullet()
+    {
+        GameObject bullet = Instantiate(_bulletPrefab,new Vector3(transform.position.x, transform.position.y, 0),transform.rotation);
+        BulletController bulletController = bullet.GetComponent<BulletController>();
+        bulletController.OnBulletDestroy = BulletDestroyCb;
+        _bulletCount++;
+    }
+
+    private void BulletDestroyCb()
+    {
+        _bulletCount--;
     }
 
     public void Show()

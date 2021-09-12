@@ -836,6 +836,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationSpeed: 100
   _shipThrust: 10
+  _bulletPrefab: {fileID: 3714933021341761052, guid: 76c7a64f8a0da49fba8fe8f3b4b819e6, type: 3}
 --- !u!50 &1720671359
 Rigidbody2D:
   serializedVersion: 4
