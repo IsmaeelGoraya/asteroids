@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _shipController: {fileID: 1720671358}
   _uIManager: {fileID: 447400528}
+  _asteroidPrefab: {fileID: 382727597528971556, guid: 0bf8d4c49f4ef4153af8aac25db9043e, type: 3}
 --- !u!1 &447400523
 GameObject:
   m_ObjectHideFlags: 0

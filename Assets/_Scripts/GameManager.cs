@@ -8,6 +8,8 @@ public class GameManager : MonoBehaviour
     private ShipController _shipController;
     [SerializeField]
     private UIManager _uIManager;
+    [SerializeField]
+    private GameObject _asteroidPrefab;
 
     private void Update()
     {
@@ -28,6 +30,7 @@ public class GameManager : MonoBehaviour
         _shipController.Show();
         _uIManager.HideMainUI();
         _uIManager.ShowHudUI();
+        SpawnAsteroids();
     }
 
     public void RestartGame()
@@ -45,5 +48,17 @@ public class GameManager : MonoBehaviour
 #else
          Application.Quit();
 #endif
+    }
+
+    private void SpawnAsteroids()
+    {
+        //Spawn one to left
+        Instantiate(_asteroidPrefab, new Vector3(Utils.ScreenEdges.Left, Random.Range(Utils.ScreenEdges.Bottom, Utils.ScreenEdges.Top)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+        //Spawn one to right
+        Instantiate(_asteroidPrefab, new Vector3(Utils.ScreenEdges.Right, Random.Range(Utils.ScreenEdges.Bottom, Utils.ScreenEdges.Top)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+        //Spawn one on top
+        Instantiate(_asteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Top), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+        //Spawn one on bottom
+        Instantiate(_asteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Bottom), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
     }
 }
