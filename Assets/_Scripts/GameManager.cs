@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     private GameObject _smallAsteroidPrefab;
 
     private int _score;
+    private int _asteroidsRemaining;
 
     private void Update()
     {
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
         _uIManager.HideMainUI();
         _uIManager.ShowHudUI();
         _score = 0;
+        _asteroidsRemaining = 0;
         _uIManager.SetScore(_score);
         SpawnAsteroids();
     }
@@ -78,10 +80,15 @@ public class GameManager : MonoBehaviour
         asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Bottom), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
         asteroidController = asteroid.GetComponent<AsteroidController>();
         asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
+
+        _asteroidsRemaining += 4;
     }
 
     private void BeforeAsteroidDestroyedCb(GameObject a_obj)
     {
+        //Decrease the count for one destroyed
+        _asteroidsRemaining -= 1;
+
         if (a_obj.name.ToLower().Contains("large"))
         {
             //Spawn two small asteroids
@@ -94,6 +101,8 @@ public class GameManager : MonoBehaviour
 
             //Score +20
             _score += 20;
+
+            _asteroidsRemaining += 2;
         }
         else
         {
@@ -102,6 +111,11 @@ public class GameManager : MonoBehaviour
         }
 
         _uIManager.SetScore(_score);
+
+        if(_asteroidsRemaining < 1)
+        {
+            RestartGame();
+        }
     }
 
     private void ClearAllAsteroids()
