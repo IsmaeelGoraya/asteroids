@@ -1,7 +1,11 @@
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public class AsteroidController : MonoBehaviour
 {
+    public Action<GameObject> OnBeforeDestroyed;
+
     private Rigidbody2D _asteroidBody;
 
     private void Awake()
@@ -15,4 +19,8 @@ public class AsteroidController : MonoBehaviour
         _asteroidBody.angularVelocity = Random.Range(-0.0f, 90.0f);
     }
 
+    public void SpawnSmallAsteroids()
+    {
+        OnBeforeDestroyed(gameObject);
+    }
 }

@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -9,6 +7,8 @@ public class UIManager : MonoBehaviour
     private GameObject _mainUI;
     [SerializeField]
     private GameObject _hudUI;
+    [SerializeField]
+    private Text _scoreText;
 
     public void HideMainUI()
     {
@@ -28,5 +28,10 @@ public class UIManager : MonoBehaviour
     public void ShowHudUI()
     {
         _hudUI.gameObject.SetActive(true);
+    }
+
+    public void SetScore(int score)
+    {
+        _scoreText.text = score.ToString();
     }
 }

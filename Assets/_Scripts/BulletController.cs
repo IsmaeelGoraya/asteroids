@@ -23,4 +23,15 @@ public class BulletController : MonoBehaviour
     {
         OnBulletDestroy();
     }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.tag == "Asteroid")
+        {
+            AsteroidController asteroidController = other.GetComponent<AsteroidController>();
+            asteroidController.SpawnSmallAsteroids();
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }
+    }
 }
