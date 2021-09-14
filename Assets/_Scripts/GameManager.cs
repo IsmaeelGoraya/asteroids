@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     private int _score;
     private int _asteroidsRemaining;
+    private int _wave;
 
     private bool _gameStarted;
 
@@ -39,6 +40,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Start Game");
         _score = 0;
         _asteroidsRemaining = 0;
+        _wave = 1;
         _gameStarted = false;
 
         _shipController.Reset();
@@ -48,13 +50,14 @@ public class GameManager : MonoBehaviour
         _uIManager.ShowHudUI();
         _uIManager.SetScore(_score);
 
-        SpawnAsteroids();
+        NewWave();
     }
 
     public void RestartGame()
     {
         _score = 0;
         _asteroidsRemaining = 0;
+        _wave = 1;
         _gameStarted = false;
 
         ClearAllAsteroids();
@@ -75,29 +78,33 @@ public class GameManager : MonoBehaviour
 #endif
     }
 
-    private void SpawnAsteroids()
+    private void NewWave()
     {
-        //Spawn one to left
-        GameObject asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Utils.ScreenEdges.Left, Random.Range(Utils.ScreenEdges.Bottom, Utils.ScreenEdges.Top)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        AsteroidController asteroidController = asteroid.GetComponent<AsteroidController>();
-        asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
+        for (int i = 0; i < _wave * 4; i += 4)
+        {
 
-        //Spawn one to right
-        asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Utils.ScreenEdges.Right, Random.Range(Utils.ScreenEdges.Bottom, Utils.ScreenEdges.Top)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        asteroidController = asteroid.GetComponent<AsteroidController>();
-        asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
+            //Spawn one to left
+            GameObject asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Utils.ScreenEdges.Left, Random.Range(Utils.ScreenEdges.Bottom, Utils.ScreenEdges.Top)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            AsteroidController asteroidController = asteroid.GetComponent<AsteroidController>();
+            asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
 
-        //Spawn one on top
-        asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Top), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        asteroidController = asteroid.GetComponent<AsteroidController>();
-        asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
+            //Spawn one to right
+            asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Utils.ScreenEdges.Right, Random.Range(Utils.ScreenEdges.Bottom, Utils.ScreenEdges.Top)), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            asteroidController = asteroid.GetComponent<AsteroidController>();
+            asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
 
-        //Spawn one on bottom
-        asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Bottom), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
-        asteroidController = asteroid.GetComponent<AsteroidController>();
-        asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
+            //Spawn one on top
+            asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Top), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            asteroidController = asteroid.GetComponent<AsteroidController>();
+            asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
 
-        _asteroidsRemaining += 4;
+            //Spawn one on bottom
+            asteroid = Instantiate(_largeAsteroidPrefab, new Vector3(Random.Range(Utils.ScreenEdges.Left, Utils.ScreenEdges.Right), Utils.ScreenEdges.Bottom), Quaternion.Euler(0.0f, 0.0f, Random.Range(0.0f, 360.0f)));
+            asteroidController = asteroid.GetComponent<AsteroidController>();
+            asteroidController.OnBeforeDestroyed = BeforeAsteroidDestroyedCb;
+
+            _asteroidsRemaining += 4;
+        }
     }
 
     private void BeforeAsteroidDestroyedCb(GameObject a_obj)
@@ -130,7 +137,8 @@ public class GameManager : MonoBehaviour
 
         if(_asteroidsRemaining < 1)
         {
-            RestartGame();
+            _wave++;
+            NewWave();
         }
     }
 
