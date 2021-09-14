@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     private GameObject _hudUI;
     [SerializeField]
     private Text _scoreText;
+    [SerializeField]
+    private Text _waveText;
 
     public void HideMainUI()
     {
@@ -33,5 +35,10 @@ public class UIManager : MonoBehaviour
     public void SetScore(int score)
     {
         _scoreText.text = score.ToString();
+    }
+
+    public void SetWave(int wave)
+    {
+        _waveText.text = wave.ToString();
     }
 }

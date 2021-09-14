@@ -49,7 +49,7 @@ public class GameManager : MonoBehaviour
         _uIManager.HideMainUI();
         _uIManager.ShowHudUI();
         _uIManager.SetScore(_score);
-
+        _uIManager.SetWave(_wave);
         NewWave();
     }
 
@@ -67,6 +67,8 @@ public class GameManager : MonoBehaviour
         _shipController.Hide();
         _uIManager.ShowMainUI();
         _uIManager.HideHudUI();
+        _uIManager.SetScore(_score);
+        _uIManager.SetWave(_wave);
     }
 
     public void QuitGame()
@@ -133,13 +135,15 @@ public class GameManager : MonoBehaviour
             _score += 50;
         }
 
-        _uIManager.SetScore(_score);
-
         if(_asteroidsRemaining < 1)
         {
             _wave++;
             NewWave();
         }
+
+        _uIManager.SetScore(_score);
+        _uIManager.SetWave(_wave);
+
     }
 
     private void ClearAllAsteroids()
