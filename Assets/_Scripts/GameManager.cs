@@ -16,11 +16,17 @@ public class GameManager : MonoBehaviour
     private int _score;
     private int _asteroidsRemaining;
 
+    private bool _gameStarted;
+
     private void Update()
     {
         //Start game if player press enter or the start text
-        if (Input.GetKeyDown(KeyCode.Return))
+        if (Input.GetKeyDown(KeyCode.Return) &&
+            !_gameStarted)
+        {
             StartGame();
+            _gameStarted = true;
+        }
 
         //Quit game if player press escape key
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -31,18 +37,26 @@ public class GameManager : MonoBehaviour
     {
         //DO the UI hide, reset operations here
         Debug.Log("Start Game");
-        _shipController.Reset();
-        _shipController.Show();
-        _uIManager.HideMainUI();
-        _uIManager.ShowHudUI();
         _score = 0;
         _asteroidsRemaining = 0;
+        _gameStarted = false;
+
+        _shipController.Reset();
+        _shipController.Show();
+
+        _uIManager.HideMainUI();
+        _uIManager.ShowHudUI();
         _uIManager.SetScore(_score);
+
         SpawnAsteroids();
     }
 
     public void RestartGame()
     {
+        _score = 0;
+        _asteroidsRemaining = 0;
+        _gameStarted = false;
+
         ClearAllAsteroids();
         //Remove the bullets fired previously from scene
         ClearAllBullets();
