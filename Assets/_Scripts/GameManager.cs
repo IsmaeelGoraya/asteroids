@@ -44,6 +44,8 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         ClearAllAsteroids();
+        //Remove the bullets fired previously from scene
+        ClearAllBullets();
         _shipController.Reset();
         _shipController.Hide();
         _uIManager.ShowMainUI();
@@ -125,6 +127,16 @@ public class GameManager : MonoBehaviour
         foreach (var asteroid in asteroids)
         {
             Destroy(asteroid);
+        }
+    }
+
+    private void ClearAllBullets()
+    {
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Bullet");
+
+        foreach (var bullet in bullets)
+        {
+            Destroy(bullet);
         }
     }
 }
