@@ -1,7 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof (Rigidbody2D))]
-[RequireComponent(typeof (PolygonCollider2D))]
 public class AsteroidController : MonoBehaviour
 {
     private Rigidbody2D _asteroidBody;
