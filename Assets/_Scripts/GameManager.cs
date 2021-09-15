@@ -25,35 +25,6 @@ public class GameManager : MonoBehaviour
     private bool _gameStarted;
     private bool _gameOver;
 
-    private void Start()
-    {
-        _shipController.OnShipDestroyed = ShipDestroyedCb;
-        _shipController.OnEnemyDestroyed = EnemyDestroyedCb;
-    }
-
-    private void Update()
-    {
-        //Start game if player press enter or the start text
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            if (!_gameStarted)
-            {
-                StartGame();
-                _gameStarted = true;
-            }
-
-            if (_gameOver)
-            {
-                RestartGame();
-                _gameOver = false;
-            }
-        }
-
-        //Quit game if player press escape key
-        if (Input.GetKeyDown(KeyCode.Escape))
-            QuitGame();
-    }
-
     public void StartGame()
     {
         //DO the UI hide, reset operations here
@@ -80,8 +51,8 @@ public class GameManager : MonoBehaviour
 
         //Making ship spawn time a little random every game session, to make it
         //a little more challenging
-        float firstInvoke = Random.Range(_shipSpawnMinTime,_shipSpawnMaxTime);
-        float repeatInvoke = Random.Range(_shipSpawnMinTime,_shipSpawnMaxTime);
+        float firstInvoke = Random.Range(_shipSpawnMinTime, _shipSpawnMaxTime);
+        float repeatInvoke = Random.Range(_shipSpawnMinTime, _shipSpawnMaxTime);
 
         InvokeRepeating("SpawnEnemy", firstInvoke, repeatInvoke);
         NewWave();
@@ -115,6 +86,35 @@ public class GameManager : MonoBehaviour
 #else
          Application.Quit();
 #endif
+    }
+
+    private void Start()
+    {
+        _shipController.OnShipDestroyed = ShipDestroyedCb;
+        _shipController.OnEnemyDestroyed = EnemyDestroyedCb;
+    }
+
+    private void Update()
+    {
+        //Start game if player press enter or the start text
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            if (!_gameStarted)
+            {
+                StartGame();
+                _gameStarted = true;
+            }
+
+            if (_gameOver)
+            {
+                RestartGame();
+                _gameOver = false;
+            }
+        }
+
+        //Quit game if player press escape key
+        if (Input.GetKeyDown(KeyCode.Escape))
+            QuitGame();
     }
 
     private void NewWave()
