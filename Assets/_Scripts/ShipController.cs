@@ -22,6 +22,22 @@ public class ShipController : MonoBehaviour
 
     private const int _bulletLimit = 5;
 
+    public void Show()
+    {
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public void Reset()
+    {
+        transform.position = Vector3.zero;
+        transform.rotation = Quaternion.identity;
+    }
+
     private void Awake()
     {
         _bulletCount = 0;
@@ -75,22 +91,6 @@ public class ShipController : MonoBehaviour
     private void EnemyDestroyCb()
     {
         OnEnemyDestroyed();
-    }
-
-    public void Show()
-    {
-        gameObject.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject.SetActive(false);
-    }
-
-    public void Reset()
-    {
-        transform.position = Vector3.zero;
-        transform.rotation = Quaternion.identity;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
