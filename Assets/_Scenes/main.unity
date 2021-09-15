@@ -170,6 +170,7 @@ MonoBehaviour:
   _uIManager: {fileID: 447400528}
   _largeAsteroidPrefab: {fileID: 382727597528971556, guid: 0bf8d4c49f4ef4153af8aac25db9043e, type: 3}
   _smallAsteroidPrefab: {fileID: 9093940603328350575, guid: 51eb3ca604200408d867313b28d4ba2f, type: 3}
+  _enemyPrefab: {fileID: 3685671383627597451, guid: 4388c65f00af74a28a71ff04992bdef9, type: 3}
 --- !u!1 &447400523
 GameObject:
   m_ObjectHideFlags: 0

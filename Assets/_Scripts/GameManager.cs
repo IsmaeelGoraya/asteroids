@@ -12,6 +12,11 @@ public class GameManager : MonoBehaviour
     private GameObject _largeAsteroidPrefab;
     [SerializeField]
     private GameObject _smallAsteroidPrefab;
+    [SerializeField]
+    private GameObject _enemyPrefab;
+
+    private const float _shipSpawnMinTime = 10;
+    private const float _shipSpawnMaxTime = 20;
 
     private int _score;
     private int _asteroidsRemaining;
@@ -50,6 +55,18 @@ public class GameManager : MonoBehaviour
         _uIManager.ShowHudUI();
         _uIManager.SetScore(_score);
         _uIManager.SetWave(_wave);
+
+        //Clear previous invokes
+        //NOTE: though this can cause troubles if we have more than one invokes
+        //since we are only using for one function this should be ok.
+        CancelInvoke();
+
+        //Making ship spawn time a little random every game session, to make it
+        //a little more challenging
+        float firstInvoke = Random.Range(_shipSpawnMinTime,_shipSpawnMaxTime);
+        float repeatInvoke = Random.Range(_shipSpawnMinTime,_shipSpawnMaxTime);
+
+        InvokeRepeating("SpawnEnemy", firstInvoke, repeatInvoke);
         NewWave();
     }
 
@@ -164,5 +181,29 @@ public class GameManager : MonoBehaviour
         {
             Destroy(bullet);
         }
+    }
+
+    private void SpawnEnemy()
+    {
+        //Random position on either left or right side.
+        ScreenEdges screenEdges = Utils.ScreenEdges;
+        Vector3 randPosition;
+        Vector3 shipMovementDirection;
+
+        int rand = Random.Range(0, 2);
+        if(rand == 0)
+        {
+            randPosition = new Vector3(screenEdges.Left - 2, Random.Range(screenEdges.Top - 1, screenEdges.Bottom + 1), 0);
+            shipMovementDirection = Vector3.right;
+        }
+        else
+        {
+            randPosition = new Vector3(screenEdges.Right + 2, Random.Range(screenEdges.Top - 1, screenEdges.Bottom + 1), 0);
+            shipMovementDirection = Vector3.left;
+        }
+
+        GameObject enemy = Instantiate(_enemyPrefab, randPosition, Quaternion.identity);
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        enemyController.Direction = shipMovementDirection;
     }
 }
