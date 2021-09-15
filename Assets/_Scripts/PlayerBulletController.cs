@@ -5,14 +5,19 @@ public class PlayerBulletController : MonoBehaviour
 {
     [SerializeField]
     private float _selfDestroyTime;
+    private const float _bulletSpeed = 15.0f;
 
     public Action OnBulletDestroy;
     public Action OnEnemyDestroy;
 
     private void Start()
     {
-        GetComponent<Rigidbody2D>().AddForce(transform.up * 40);
         SelDestroy(_selfDestroyTime);
+    }
+
+    private void Update()
+    {
+        transform.Translate(Vector3.up * _bulletSpeed * Time.deltaTime);
     }
 
     private void SelDestroy(float a_after)
