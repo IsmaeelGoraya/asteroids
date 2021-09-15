@@ -4,8 +4,8 @@ public class EnemyController : MonoBehaviour
 {
     public Vector3 Direction;
 
-    private const float _minSpeed = 5;
-    private const float _maxSpeed = 10;
+    private const float _minSpeed = 1;
+    private const float _maxSpeed = 5;
     private float _speed;
 
     private void Start()
