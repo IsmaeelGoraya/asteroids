@@ -4,10 +4,11 @@ public class EnemyBulletController : MonoBehaviour
 {
     private Vector3 _playerPosition;
     private Vector3 _fireDirection;
+    private const float _bulletSpeed = 10.0f;
 
     private void Update()
     {
-        transform.Translate(_fireDirection * 10 * Time.deltaTime);
+        transform.Translate(_fireDirection * _bulletSpeed * Time.deltaTime);
     }
 
     public void ShootAtPlayer(Vector3 a_playerPosition)
