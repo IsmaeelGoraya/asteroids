@@ -96,6 +96,8 @@ public class GameManager : MonoBehaviour
         ClearAllAsteroids();
         //Remove the bullets fired previously from scene
         ClearAllBullets();
+        //Remove the ships spawned previously
+        ClearAllEnemies();
         _shipController.Reset();
         _shipController.Hide();
         _uIManager.ShowMainUI();
@@ -200,6 +202,16 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void ClearAllEnemies()
+    {
+        GameObject[] bullets = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (var bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+    }
+
     private void SpawnEnemy()
     {
         //Random position on either left or right side.
@@ -222,6 +234,7 @@ public class GameManager : MonoBehaviour
         GameObject enemy = Instantiate(_enemyPrefab, randPosition, Quaternion.identity);
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.Direction = shipMovementDirection;
+        enemyController.ShootPlayer();
     }
 
     private void ShipDestroyedCb()

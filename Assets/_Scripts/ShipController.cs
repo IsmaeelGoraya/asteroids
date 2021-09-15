@@ -80,7 +80,7 @@ public class ShipController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!other.name.ToLower().Contains("bullet"))
+        if (other.tag == "Enemy" || other.tag == "Asteroid")
         {
             OnShipDestroyed();
             Hide();
