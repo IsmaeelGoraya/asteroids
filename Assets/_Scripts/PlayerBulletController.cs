@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class PlayerBulletController : MonoBehaviour
 {
+    public Action OnBulletDestroy;
+    public Action OnEnemyDestroy;
+
     [SerializeField]
     private float _selfDestroyTime;
     private const float _bulletSpeed = 15.0f;
-
-    public Action OnBulletDestroy;
-    public Action OnEnemyDestroy;
 
     private void Start()
     {
