@@ -52,7 +52,7 @@ public class ShipController : MonoBehaviour
     private void FireBullet()
     {
         GameObject bullet = Instantiate(_bulletPrefab,new Vector3(transform.position.x, transform.position.y, 0),transform.rotation);
-        BulletController bulletController = bullet.GetComponent<BulletController>();
+        PlayerBulletController bulletController = bullet.GetComponent<PlayerBulletController>();
         bulletController.OnBulletDestroy = BulletDestroyCb;
         _bulletCount++;
     }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class BulletController : MonoBehaviour
+public class PlayerBulletController : MonoBehaviour
 {
     [SerializeField]
     private float _selfDestroyTime;
