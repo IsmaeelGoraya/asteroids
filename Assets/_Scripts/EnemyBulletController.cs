@@ -4,7 +4,7 @@ public class EnemyBulletController : MonoBehaviour
 {
     private Vector3 _playerPosition;
     private Vector3 _fireDirection;
-    private const float _bulletSpeed = 10.0f;
+    private const float _bulletSpeed = 8.0f;
 
     private void Update()
     {
