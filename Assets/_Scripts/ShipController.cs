@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -17,11 +18,14 @@ public class ShipController : MonoBehaviour
     private Rigidbody2D _shipRigidbody2D;
     private float _shipThurstInput;
     private int _bulletCount;
+    private List<GameObject> _bullets;
+
     private const int _bulletLimit = 5;
 
     private void Awake()
     {
         _bulletCount = 0;
+        CreateBulletPool();
     }
 
     private void Start()
@@ -52,11 +56,15 @@ public class ShipController : MonoBehaviour
 
     private void FireBullet()
     {
-        GameObject bullet = Instantiate(_bulletPrefab,new Vector3(transform.position.x, transform.position.y, 0),transform.rotation);
-        PlayerBulletController bulletController = bullet.GetComponent<PlayerBulletController>();
-        bulletController.OnBulletDestroy = BulletDestroyCb;
-        bulletController.OnEnemyDestroy = EnemyDestroyCb;
-        _bulletCount++;
+        //Get disabled bullet from pool
+        GameObject bullet = GetBullet();
+        if (bullet != null)
+        {
+            bullet.transform.rotation = transform.rotation;
+            bullet.transform.position = transform.position;
+            bullet.SetActive(true);
+            _bulletCount++;
+        }
     }
 
     private void BulletDestroyCb()
@@ -92,5 +100,35 @@ public class ShipController : MonoBehaviour
             OnShipDestroyed();
             Hide();
         }
+    }
+
+    private void CreateBulletPool()
+    {
+        _bullets = new List<GameObject>();
+
+        for (int i = 0; i < _bulletLimit; i++)
+        {
+            GameObject bullet = Instantiate(_bulletPrefab, Vector3.zero, Quaternion.identity);
+            bullet.SetActive(false);
+            PlayerBulletController bulletController = bullet.GetComponent<PlayerBulletController>();
+            bulletController.OnBulletDestroy = BulletDestroyCb;
+            bulletController.OnEnemyDestroy = EnemyDestroyCb;
+            _bullets.Add(bullet);
+        }
+    }
+
+    private GameObject GetBullet()
+    {
+        GameObject retBullet = null;
+
+        for (int i = 0; i < _bullets.Count; i++)
+        {
+            if(!_bullets[i].activeSelf)
+            {
+                retBullet = _bullets[i];
+            }
+        }
+
+        return retBullet;
     }
 }

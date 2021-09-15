@@ -10,9 +10,9 @@ public class PlayerBulletController : MonoBehaviour
     private float _selfDestroyTime;
     private const float _bulletSpeed = 15.0f;
 
-    private void Start()
+    private void OnEnable()
     {
-        SelDestroy(_selfDestroyTime);
+        Invoke("SelDestroy", _selfDestroyTime);
     }
 
     private void Update()
@@ -20,14 +20,15 @@ public class PlayerBulletController : MonoBehaviour
         transform.Translate(Vector3.up * _bulletSpeed * Time.deltaTime);
     }
 
-    private void SelDestroy(float a_after)
+    private void SelDestroy()
     {
-        Destroy(gameObject, a_after);
+        gameObject.SetActive(false);
+        OnBulletDestroy();
     }
 
-    private void OnDestroy()
+    private void OnDisable()
     {
-        OnBulletDestroy();
+        CancelInvoke();
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -37,12 +38,15 @@ public class PlayerBulletController : MonoBehaviour
             AsteroidController asteroidController = other.GetComponent<AsteroidController>();
             asteroidController.SpawnSmallAsteroids();
             Destroy(other.gameObject);
-            Destroy(gameObject);
-        }else if(other.tag == "Enemy")
+            gameObject.SetActive(false);
+            OnBulletDestroy();
+        }
+        else if(other.tag == "Enemy")
         {
             OnEnemyDestroy();
             Destroy(other.gameObject);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
+            OnBulletDestroy();
         }
     }
 }

@@ -199,7 +199,7 @@ public class GameManager : MonoBehaviour
 
         foreach (var bullet in bullets)
         {
-            Destroy(bullet);
+            bullet.SetActive(false);
         }
     }
 
