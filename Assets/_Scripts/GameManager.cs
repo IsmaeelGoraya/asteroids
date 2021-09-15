@@ -23,15 +23,29 @@ public class GameManager : MonoBehaviour
     private int _wave;
 
     private bool _gameStarted;
+    private bool _gameOver;
+
+    private void Start()
+    {
+        _shipController.OnShipDestroyed = ShipDestroyedCb;
+    }
 
     private void Update()
     {
         //Start game if player press enter or the start text
-        if (Input.GetKeyDown(KeyCode.Return) &&
-            !_gameStarted)
+        if (Input.GetKeyDown(KeyCode.Return))
         {
-            StartGame();
-            _gameStarted = true;
+            if (!_gameStarted)
+            {
+                StartGame();
+                _gameStarted = true;
+            }
+
+            if (_gameOver)
+            {
+                RestartGame();
+                _gameOver = false;
+            }
         }
 
         //Quit game if player press escape key
@@ -47,11 +61,13 @@ public class GameManager : MonoBehaviour
         _asteroidsRemaining = 0;
         _wave = 1;
         _gameStarted = false;
+        _gameOver = false;
 
         _shipController.Reset();
         _shipController.Show();
 
         _uIManager.HideMainUI();
+        _uIManager.HideGameOver();
         _uIManager.ShowHudUI();
         _uIManager.SetScore(_score);
         _uIManager.SetWave(_wave);
@@ -84,6 +100,7 @@ public class GameManager : MonoBehaviour
         _shipController.Hide();
         _uIManager.ShowMainUI();
         _uIManager.HideHudUI();
+        _uIManager.HideGameOver();
         _uIManager.SetScore(_score);
         _uIManager.SetWave(_wave);
     }
@@ -205,5 +222,11 @@ public class GameManager : MonoBehaviour
         GameObject enemy = Instantiate(_enemyPrefab, randPosition, Quaternion.identity);
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.Direction = shipMovementDirection;
+    }
+
+    private void ShipDestroyedCb()
+    {
+        _uIManager.ShowGameOver();
+        _gameOver = true;
     }
 }

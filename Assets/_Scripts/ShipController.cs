@@ -1,8 +1,11 @@
+using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ShipController : MonoBehaviour
 {
+    public Action OnShipDestroyed;
+
     [SerializeField]
     private float _rotationSpeed = 100.0f;
     [SerializeField]
@@ -73,5 +76,14 @@ public class ShipController : MonoBehaviour
     {
         transform.position = Vector3.zero;
         transform.rotation = Quaternion.identity;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (!other.name.ToLower().Contains("bullet"))
+        {
+            OnShipDestroyed();
+            Hide();
+        }
     }
 }

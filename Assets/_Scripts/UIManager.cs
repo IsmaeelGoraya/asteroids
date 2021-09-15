@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject _hudUI;
     [SerializeField]
+    private GameObject _gameoverUI;
+    [SerializeField]
     private Text _scoreText;
     [SerializeField]
     private Text _waveText;
@@ -40,5 +42,15 @@ public class UIManager : MonoBehaviour
     public void SetWave(int wave)
     {
         _waveText.text = wave.ToString();
+    }
+
+    public void ShowGameOver()
+    {
+        _gameoverUI.SetActive(true);
+    }
+
+    public void HideGameOver()
+    {
+        _gameoverUI.SetActive(false);
     }
 }
