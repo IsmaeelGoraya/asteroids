@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     public Action OnShipDestroyed;
+    public Action OnEnemyDestroyed;
 
     [SerializeField]
     private float _rotationSpeed = 100.0f;
@@ -54,12 +55,18 @@ public class ShipController : MonoBehaviour
         GameObject bullet = Instantiate(_bulletPrefab,new Vector3(transform.position.x, transform.position.y, 0),transform.rotation);
         PlayerBulletController bulletController = bullet.GetComponent<PlayerBulletController>();
         bulletController.OnBulletDestroy = BulletDestroyCb;
+        bulletController.OnEnemyDestroy = EnemyDestroyCb;
         _bulletCount++;
     }
 
     private void BulletDestroyCb()
     {
         _bulletCount--;
+    }
+
+    private void EnemyDestroyCb()
+    {
+        OnEnemyDestroyed();
     }
 
     public void Show()

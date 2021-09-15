@@ -7,6 +7,7 @@ public class PlayerBulletController : MonoBehaviour
     private float _selfDestroyTime;
 
     public Action OnBulletDestroy;
+    public Action OnEnemyDestroy;
 
     private void Start()
     {
@@ -30,6 +31,11 @@ public class PlayerBulletController : MonoBehaviour
         {
             AsteroidController asteroidController = other.GetComponent<AsteroidController>();
             asteroidController.SpawnSmallAsteroids();
+            Destroy(other.gameObject);
+            Destroy(gameObject);
+        }else if(other.tag == "Enemy")
+        {
+            OnEnemyDestroy();
             Destroy(other.gameObject);
             Destroy(gameObject);
         }

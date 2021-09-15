@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _shipController.OnShipDestroyed = ShipDestroyedCb;
+        _shipController.OnEnemyDestroyed = EnemyDestroyedCb;
     }
 
     private void Update()
@@ -241,5 +242,12 @@ public class GameManager : MonoBehaviour
     {
         _uIManager.ShowGameOver();
         _gameOver = true;
+    }
+
+    private void EnemyDestroyedCb()
+    {
+        //Score +100
+        _score += 100;
+        _uIManager.SetScore(_score);
     }
 }
